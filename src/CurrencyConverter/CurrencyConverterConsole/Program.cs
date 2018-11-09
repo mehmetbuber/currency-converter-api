@@ -17,16 +17,22 @@ namespace CurrencyConverterConsole
             Converter converter = new Converter();
 
             //List of currencies
-            //var list = converter.GetAllCurrencies();
-            //Console.WriteLine(String.Join(",", list.Select(p => p.id).ToArray()));
+            var currencies = converter.GetAllCurrencies();
+            Console.WriteLine(String.Join(",", currencies.Select(p => p.id).ToArray()));
 
             //Basic conversion
-            //double result = converter.Convert(1, CurrencyType.USD, CurrencyType.TRY);
-            //Console.WriteLine(result);
+            double basic = converter.Convert(1, CurrencyType.USD, CurrencyType.TRY);
+            Console.WriteLine(basic);
 
-            var list = converter.GetHistory(CurrencyType.USD, CurrencyType.TRY, "2018-08-01", "2018-08-06");
-            Console.WriteLine(String.Join(",", list.Select(p => p.Date).ToArray()));
-            Console.WriteLine(String.Join(",", list.Select(p => p.ExchangeRate).ToArray()));
+            //History Single Date
+            var history = converter.GetHistory(CurrencyType.USD, CurrencyType.TRY, "2018-08-01");
+            Console.WriteLine(history.Date);
+            Console.WriteLine(history.ExchangeRate);
+
+            //History Date Range
+            var historyRange = converter.GetHistoryRange(CurrencyType.USD, CurrencyType.TRY, "2018-08-01", "2018-08-06");
+            Console.WriteLine(String.Join(",", historyRange.Select(p => p.Date).ToArray()));
+            Console.WriteLine(String.Join(",", historyRange.Select(p => p.ExchangeRate).ToArray()));
 
             Console.Read();
         }

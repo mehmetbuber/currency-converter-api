@@ -36,7 +36,7 @@ namespace CurrencyConverter.Helpers
             return list;
         }
 
-        public static List<CurrencyHistory> GetRange(CurrencyType from, CurrencyType to, string startDate, string endDate)
+        public static List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate)
         {
             string url = @"https://free.currencyconverterapi.com/api/v6/convert?q=" + from + "_" + to + "&compact=ultra&date=" + startDate + "&endDate=" + endDate;
             string jsonString = GetJson(url);
@@ -57,6 +57,24 @@ namespace CurrencyConverter.Helpers
             return list;
         }
 
+        public static CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, string date)
+        {
+            string url = @"https://free.currencyconverterapi.com/api/v6/convert?q=" + from + "_" + to + "&compact=ultra&date=" + date;
+            string jsonString = GetJson(url);
+            var data = JObject.Parse(jsonString).First;
+            var obj = (JObject)data;
+            foreach (JProperty prop in obj.Properties())
+            {
+                return new CurrencyHistory
+                {
+                    Date = prop.Name,
+                    ExchangeRate = data[prop.Name].ToObject<double>()
+                };
+            }
+
+            return null;
+        }
+        
         public static double ExchangeRate(CurrencyType from, CurrencyType to)
         {
             string url = @"https://free.currencyconverterapi.com/api/v6/convert?q=" + from + "_" + to + "&compact=y";

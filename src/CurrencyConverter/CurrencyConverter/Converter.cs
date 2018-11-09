@@ -21,9 +21,24 @@ namespace CurrencyConverter
             return RequestHelper.GetAllCurrencies();
         }
 
-        public List<CurrencyHistory> GetHistory(CurrencyType from, CurrencyType to, string startDate, string endDate)
+        public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, DateTime date)
         {
-            return RequestHelper.GetRange(from, to, startDate, endDate);
+            return RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd"));
+        }
+
+        public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, string date)
+        {
+            return RequestHelper.GetHistory(from, to, date);
+        }
+
+        public List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, DateTime startDate, DateTime endDate)
+        {
+            return RequestHelper.GetHistoryRange(from, to, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+        }
+
+        public List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate)
+        {
+            return RequestHelper.GetHistoryRange(from, to, startDate, endDate);
         }
     }
 }
