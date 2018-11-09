@@ -34,6 +34,9 @@ namespace CurrencyConverterConsole
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.Date).ToArray()));
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.ExchangeRate).ToArray()));
 
+            converter.AddConversion(CurrencyType.USD, CurrencyType.TRY);
+            converter.AddConversion(CurrencyType.TRY, CurrencyType.USD);
+
             Console.Read();
         }
     }
