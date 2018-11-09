@@ -24,5 +24,5 @@ var history = converter.GetHistory(CurrencyType.USD, CurrencyType.EUR, "2018-08-
 
 ### History Date Range
 ```
-var historyRange = converter.GetHistory(CurrencyType.USD, CurrencyType.EUR, "2018-08-01", "2018-08-06");
+var historyRange = converter.GetHistoryRange(CurrencyType.USD, CurrencyType.EUR, "2018-08-01", "2018-08-06");
 ```
