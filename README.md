@@ -6,7 +6,7 @@ https://free.currencyconverterapi.com/ Unofficial C# Library
 Converter converter = new Converter();
 ```
 
-## Synchronous
+## Synchronous Functions
 ### List of Currencies
 ```
 var currencies = converter.GetAllCurrencies();
@@ -27,7 +27,7 @@ var history = converter.GetHistory(CurrencyType.USD, CurrencyType.EUR, "2018-08-
 var historyRange = converter.GetHistoryRange(CurrencyType.USD, CurrencyType.EUR, "2018-08-01", "2018-08-06");
 ```
 
-## Asynchronous
+## Asynchronous Functions
 ### List of Currencies Async
 ```
 var currencies = await converter.GetAllCurrenciesAsync();
