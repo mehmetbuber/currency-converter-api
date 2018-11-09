@@ -34,10 +34,37 @@ namespace CurrencyConverterConsole
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.Date).ToArray()));
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.ExchangeRate).ToArray()));
 
-            converter.AddConversion(CurrencyType.USD, CurrencyType.TRY);
-            converter.AddConversion(CurrencyType.TRY, CurrencyType.USD);
-
             Console.Read();
+        }
+
+        //List of currencies Async
+        static async void GetAllCurrenciesAsync(Converter converter)
+        {
+            var result = await converter.GetAllCurrenciesAsync();
+            Console.WriteLine(String.Join(",", result.Select(p => p.id).ToArray()));
+        }
+
+        //Basic Conversion Async
+        static async void ConvertAsync(Converter converter)
+        {
+            var result = await converter.ConvertAsync(1, CurrencyType.USD, CurrencyType.TRY);
+            Console.WriteLine("Exchange rate : {0}", result);
+        }
+
+        //History Single Date Async
+        static async void GetHistoryAsync(Converter converter)
+        {
+            var history = await converter.GetHistoryAsync(CurrencyType.USD, CurrencyType.TRY, "2018-08-01");
+            Console.WriteLine(history.Date);
+            Console.WriteLine(history.ExchangeRate);
+        }
+
+        //History Date Range Async
+        static async void GetHistoryRangeAsync(Converter converter)
+        {
+            var historyRange = await converter.GetHistoryRangeAsync(CurrencyType.USD, CurrencyType.TRY, "2018-08-01", "2018-08-06");
+            Console.WriteLine(String.Join(",", historyRange.Select(p => p.Date).ToArray()));
+            Console.WriteLine(String.Join(",", historyRange.Select(p => p.ExchangeRate).ToArray()));
         }
     }
 }
