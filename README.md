@@ -1,7 +1,7 @@
 # currency-converter-api
 https://free.currencyconverterapi.com/ Unofficial C# Library
 
-### Converter Object
+## Converter Object
 ```
 Converter converter = new Converter();
 ```
