@@ -40,6 +40,17 @@ namespace CurrencyConverter
         }
 
 
+        public List<Country> GetAllCountries()
+        {
+            return RequestHelper.GetAllCountries();
+        }
+
+        public async Task<List<Country>> GetAllCountriesAsync()
+        {
+            return await Task.Run(() => RequestHelper.GetAllCountries());
+        }
+
+
         public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, DateTime date)
         {
             return RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd"));

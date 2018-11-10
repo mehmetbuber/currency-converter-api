@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Converter.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Enums\CurrencyType.cs" />

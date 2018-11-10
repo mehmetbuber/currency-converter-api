@@ -16,10 +16,12 @@ namespace CurrencyConverter.Helpers
 {
     public static class RequestHelper
     {
+        public const string BaseUrl = "https://free.currencyconverterapi.com/api/v6/";
+
         public static List<Currency> GetAllCurrencies()
         {
-            string url = @"https://free.currencyconverterapi.com/api/v6/currencies";
-            string jsonString = GetJson(url);
+            string url = BaseUrl + "currencies";
+            string jsonString = GetResponse(url);
 
             var data = JObject.Parse(jsonString)["results"].ToArray();
             var list = new List<Currency>();
@@ -36,10 +38,33 @@ namespace CurrencyConverter.Helpers
             return list;
         }
 
+        public static List<Country> GetAllCountries()
+        {
+            string url = BaseUrl + "countries";
+            string jsonString = GetResponse(url);
+
+            var data = JObject.Parse(jsonString)["results"].ToArray();
+            var list = new List<Country>();
+            foreach (var item in data)
+            {
+                list.Add(new Country
+                {
+                    id = item.First["id"]?.ToString(),
+                    currencyName = item.First["currencyName"]?.ToString(),
+                    currencySymbol = item.First["currencySymbol"]?.ToString(),
+                    currencyId = item.First["currencySymbol"]?.ToString(),
+                    alpha3 = item.First["alpha3"]?.ToString(),
+                    name = item.First["name"]?.ToString()
+                });
+            }
+
+            return list;
+        }
+
         public static List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate)
         {
-            string url = @"https://free.currencyconverterapi.com/api/v6/convert?q=" + from + "_" + to + "&compact=ultra&date=" + startDate + "&endDate=" + endDate;
-            string jsonString = GetJson(url);
+            string url = BaseUrl + "convert?q=" + from + "_" + to + "&compact=ultra&date=" + startDate + "&endDate=" + endDate;
+            string jsonString = GetResponse(url);
             var list = new List<CurrencyHistory>();
             var data = JObject.Parse(jsonString).First.ToArray();
             foreach (var item in data)
@@ -59,16 +84,16 @@ namespace CurrencyConverter.Helpers
 
         public static CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, string date)
         {
-            string url = @"https://free.currencyconverterapi.com/api/v6/convert?q=" + from + "_" + to + "&compact=ultra&date=" + date;
-            string jsonString = GetJson(url);
-            var data = JObject.Parse(jsonString).First;
+            string url = BaseUrl + "convert?q=" + from + "_" + to + "&compact=ultra&date=" + date;
+            string jsonString = GetResponse(url);
+            var data = JObject.Parse(jsonString);
             var obj = (JObject)data;
             foreach (JProperty prop in obj.Properties())
             {
                 return new CurrencyHistory
                 {
                     Date = prop.Name,
-                    ExchangeRate = data[prop.Name].ToObject<double>()
+                    ExchangeRate = data[prop.Name][date].ToObject<double>()
                 };
             }
 
@@ -77,12 +102,12 @@ namespace CurrencyConverter.Helpers
         
         public static double ExchangeRate(CurrencyType from, CurrencyType to)
         {
-            string url = @"https://free.currencyconverterapi.com/api/v6/convert?q=" + from + "_" + to + "&compact=y";
-            string jsonString = GetJson(url);
+            string url = BaseUrl + "convert?q=" + from + "_" + to + "&compact=y";
+            string jsonString = GetResponse(url);
             return JObject.Parse(jsonString).First.First["val"].ToObject<double>();
         }
 
-        private static string GetJson(string url)
+        private static string GetResponse(string url)
         {
             string jsonString = string.Empty;
 
