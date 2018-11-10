@@ -5,13 +5,13 @@ Unofficial https://www.currencyconverterapi.com/ C# Library
 ### Without API KEY
 Requests goes to https://free.currencyconverterapi.com/api/v6/ base url without api key;
 ```c#
-Converter converter = new Converter();
+var converter = new Converter();
 ```
 
 ### With API KEY
 Requests goes to https://api.currencyconverterapi.com/api/v6/ base url with api key;
 ```c#
-Converter converter = new Converter("[YOUR_API_KEY]");
+var converter = new Converter("[YOUR_API_KEY]");
 ```
 
 ## Synchronous Functions
