@@ -9,7 +9,7 @@ namespace CurrencyConverter
 {
     public class Converter
     {
-        private string _apiKey { get; }
+        private string ApiKey { get; }
 
         public Converter()
         {
@@ -17,12 +17,12 @@ namespace CurrencyConverter
 
         public Converter(string apiKey)
         {
-            _apiKey = apiKey;
+            ApiKey = apiKey;
         }
 
         public double Convert(double amount, CurrencyType from, CurrencyType to)
         {
-            return RequestHelper.ExchangeRate(from, to, _apiKey) * amount;
+            return RequestHelper.ExchangeRate(from, to, ApiKey) * amount;
         }
 
         public async Task<double> ConvertAsync(double amount, CurrencyType from, CurrencyType to)
@@ -33,7 +33,7 @@ namespace CurrencyConverter
 
         public List<Currency> GetAllCurrencies()
         {
-            return RequestHelper.GetAllCurrencies(_apiKey);
+            return RequestHelper.GetAllCurrencies(ApiKey);
         }
 
         public async Task<List<Currency>> GetAllCurrenciesAsync()
@@ -44,7 +44,7 @@ namespace CurrencyConverter
 
         public List<Country> GetAllCountries()
         {
-            return RequestHelper.GetAllCountries(_apiKey);
+            return RequestHelper.GetAllCountries(ApiKey);
         }
 
         public async Task<List<Country>> GetAllCountriesAsync()
@@ -55,7 +55,7 @@ namespace CurrencyConverter
 
         public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, DateTime date)
         {
-            return RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd"), _apiKey);
+            return RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd"), ApiKey);
         }
 
         public async Task<CurrencyHistory> GetHistoryAsync(CurrencyType from, CurrencyType to, DateTime date)
@@ -66,7 +66,7 @@ namespace CurrencyConverter
 
         public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, string date)
         {
-            return RequestHelper.GetHistory(from, to, date, _apiKey);
+            return RequestHelper.GetHistory(from, to, date, ApiKey);
         }
 
         public async Task<CurrencyHistory> GetHistoryAsync(CurrencyType from, CurrencyType to, string date)
@@ -77,7 +77,7 @@ namespace CurrencyConverter
 
         public List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate)
         {
-            return RequestHelper.GetHistoryRange(from, to, startDate, endDate, _apiKey);
+            return RequestHelper.GetHistoryRange(from, to, startDate, endDate, ApiKey);
         }
 
         public async Task<List<CurrencyHistory>> GetHistoryRangeAsync(CurrencyType from, CurrencyType to, string startDate, string endDate)

@@ -24,13 +24,7 @@ namespace CurrencyConverter.Helpers
             var jsonString = GetResponse(url);
 
             var data = JObject.Parse(jsonString)["results"].ToArray();
-
-            return data.Select(item => new Currency
-            {
-                id = item.First["id"]?.ToString(),
-                currencyName = item.First["currencyName"]?.ToString(),
-                currencySymbol = item.First["currencySymbol"]?.ToString()
-            }).ToList();
+            return data.Select(item => item.First.ToObject<Currency>()).ToList();
         }
 
         public static List<Country> GetAllCountries(string apiKey = null)
@@ -45,16 +39,7 @@ namespace CurrencyConverter.Helpers
 
             var data = JObject.Parse(jsonString)["results"].ToArray();
 
-            return data.Select(item => new Country
-            {
-                id = item.First["id"]?.ToString(),
-                currencyName = item.First["currencyName"]?.ToString(),
-                currencySymbol = item.First["currencySymbol"]?.ToString(),
-                currencyId = item.First["currencySymbol"]?.ToString(),
-                alpha3 = item.First["alpha3"]?.ToString(),
-                name = item.First["name"]?.ToString()
-            })
-                .ToList();
+            return data.Select(item => item.First.ToObject<Country>()).ToList();
         }
 
         public static List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate, string apiKey = null)
