@@ -10,7 +10,8 @@ namespace CurrencyConverterConsole
         static void Main(string[] args)
         {
             //Converter object
-            Converter converter = new Converter();
+            var premiumConverter = new Converter("[YOUR_API_KEY]");
+            var converter = new Converter();
 
             //List of currencies
             var currencies = converter.GetAllCurrencies();
@@ -18,9 +19,6 @@ namespace CurrencyConverterConsole
 
             //List of countries
             var countries = converter.GetAllCountries();
-            Console.WriteLine(String.Join(",", countries.Select(p => p.id).ToArray()));
-            Console.WriteLine(String.Join(",", countries.Select(p => p.currencySymbol).ToArray()));
-            Console.WriteLine(String.Join(",", countries.Select(p => p.currencyName).ToArray()));
             Console.WriteLine(String.Join(",", countries.Select(p => p.name).ToArray()));
 
             //Basic conversion
@@ -37,11 +35,12 @@ namespace CurrencyConverterConsole
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.Date).ToArray()));
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.ExchangeRate).ToArray()));
 
-            //GetAllCurrenciesAsync(converter);
-            //GetAllCountriesAsync(converter);
-            //ConvertAsync(converter);
-            //GetHistoryAsync(converter);
-            //GetHistoryRangeAsync(converter);
+            //Async Functions
+            GetAllCurrenciesAsync(converter);
+            GetAllCountriesAsync(converter);
+            ConvertAsync(converter);
+            GetHistoryAsync(converter);
+            GetHistoryRangeAsync(converter);
 
             Console.Read();
         }

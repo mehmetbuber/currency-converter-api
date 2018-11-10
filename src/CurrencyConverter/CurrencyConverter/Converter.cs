@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CurrencyConverter.Enums;
 using CurrencyConverter.Helpers;
@@ -11,21 +9,20 @@ namespace CurrencyConverter
 {
     public class Converter
     {
-        public List<Tuple<string, string>> Conversions { get; set; }
+        private string _apiKey { get; }
 
         public Converter()
         {
-            Conversions = new List<Tuple<string, string>>();
         }
 
         public Converter(string apiKey)
         {
-            Conversions = new List<Tuple<string, string>>();
+            _apiKey = apiKey;
         }
 
         public double Convert(double amount, CurrencyType from, CurrencyType to)
         {
-            return RequestHelper.ExchangeRate(from, to) * amount;
+            return RequestHelper.ExchangeRate(from, to, _apiKey) * amount;
         }
 
         public async Task<double> ConvertAsync(double amount, CurrencyType from, CurrencyType to)
@@ -36,73 +33,68 @@ namespace CurrencyConverter
 
         public List<Currency> GetAllCurrencies()
         {
-            return RequestHelper.GetAllCurrencies();
+            return RequestHelper.GetAllCurrencies(_apiKey);
         }
 
         public async Task<List<Currency>> GetAllCurrenciesAsync()
         {
-            return await Task.Run(() => RequestHelper.GetAllCurrencies());
+            return await Task.Run(() => GetAllCurrencies());
         }
 
 
         public List<Country> GetAllCountries()
         {
-            return RequestHelper.GetAllCountries();
+            return RequestHelper.GetAllCountries(_apiKey);
         }
 
         public async Task<List<Country>> GetAllCountriesAsync()
         {
-            return await Task.Run(() => RequestHelper.GetAllCountries());
+            return await Task.Run(() => GetAllCountries());
         }
 
 
         public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, DateTime date)
         {
-            return RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd"));
+            return RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd"), _apiKey);
         }
 
         public async Task<CurrencyHistory> GetHistoryAsync(CurrencyType from, CurrencyType to, DateTime date)
         {
-            return await Task.Run(() => RequestHelper.GetHistory(from, to, date.ToString("yyyy-MM-dd")));
+            return await Task.Run(() => GetHistory(from, to, date.ToString("yyyy-MM-dd")));
         }
 
 
         public CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, string date)
         {
-            return RequestHelper.GetHistory(from, to, date);
+            return RequestHelper.GetHistory(from, to, date, _apiKey);
         }
 
         public async Task<CurrencyHistory> GetHistoryAsync(CurrencyType from, CurrencyType to, string date)
         {
-            return await Task.Run(() => RequestHelper.GetHistory(from, to, date));
-        }
-
-
-        public List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, DateTime startDate, DateTime endDate)
-        {
-            return RequestHelper.GetHistoryRange(from, to, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
-        }
-
-        public async Task<List<CurrencyHistory>> GetHistoryRangeAsync(CurrencyType from, CurrencyType to, DateTime startDate, DateTime endDate)
-        {
-            return await Task.Run(() => RequestHelper.GetHistoryRange(from, to, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd")));
+            return await Task.Run(() => GetHistory(from, to, date));
         }
 
 
         public List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate)
         {
-            return RequestHelper.GetHistoryRange(from, to, startDate, endDate);
+            return RequestHelper.GetHistoryRange(from, to, startDate, endDate, _apiKey);
         }
 
         public async Task<List<CurrencyHistory>> GetHistoryRangeAsync(CurrencyType from, CurrencyType to, string startDate, string endDate)
         {
-            return await Task.Run(() => RequestHelper.GetHistoryRange(from, to, startDate, endDate));
+            return await Task.Run(() => GetHistoryRange(from, to, startDate, endDate));
         }
 
 
-        public void AddConversion(CurrencyType from, CurrencyType to)
+        public List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, DateTime startDate, DateTime endDate)
         {
-            Conversions.Add(Tuple.Create(from.ToString(), to.ToString()));
+            return GetHistoryRange(from, to, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
         }
+
+        public async Task<List<CurrencyHistory>> GetHistoryRangeAsync(CurrencyType from, CurrencyType to, DateTime startDate, DateTime endDate)
+        {
+            return await Task.Run(() => GetHistoryRange(from, to, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd")));
+        }
+
     }
 }

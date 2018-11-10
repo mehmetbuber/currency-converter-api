@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using CurrencyConverter.Enums;
 using CurrencyConverter.Models;
-using RestSharp;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CurrencyConverter.Helpers
@@ -27,21 +21,16 @@ namespace CurrencyConverter.Helpers
             else
                 url = PremiumBaseUrl + "currencies" + "?apiKey=" + apiKey;
 
-            string jsonString = GetResponse(url);
+            var jsonString = GetResponse(url);
 
             var data = JObject.Parse(jsonString)["results"].ToArray();
-            var list = new List<Currency>();
-            foreach (var item in data)
-            {
-                list.Add(new Currency
-                {
-                    id = item.First["id"]?.ToString(),
-                    currencyName = item.First["currencyName"]?.ToString(),
-                    currencySymbol = item.First["currencySymbol"]?.ToString()
-                });
-            }
 
-            return list;
+            return data.Select(item => new Currency
+            {
+                id = item.First["id"]?.ToString(),
+                currencyName = item.First["currencyName"]?.ToString(),
+                currencySymbol = item.First["currencySymbol"]?.ToString()
+            }).ToList();
         }
 
         public static List<Country> GetAllCountries(string apiKey = null)
@@ -52,24 +41,20 @@ namespace CurrencyConverter.Helpers
             else
                 url = PremiumBaseUrl + "countries" + "?apiKey=" + apiKey;
 
-            string jsonString = GetResponse(url);
+            var jsonString = GetResponse(url);
 
             var data = JObject.Parse(jsonString)["results"].ToArray();
-            var list = new List<Country>();
-            foreach (var item in data)
-            {
-                list.Add(new Country
-                {
-                    id = item.First["id"]?.ToString(),
-                    currencyName = item.First["currencyName"]?.ToString(),
-                    currencySymbol = item.First["currencySymbol"]?.ToString(),
-                    currencyId = item.First["currencySymbol"]?.ToString(),
-                    alpha3 = item.First["alpha3"]?.ToString(),
-                    name = item.First["name"]?.ToString()
-                });
-            }
 
-            return list;
+            return data.Select(item => new Country
+            {
+                id = item.First["id"]?.ToString(),
+                currencyName = item.First["currencyName"]?.ToString(),
+                currencySymbol = item.First["currencySymbol"]?.ToString(),
+                currencyId = item.First["currencySymbol"]?.ToString(),
+                alpha3 = item.First["alpha3"]?.ToString(),
+                name = item.First["name"]?.ToString()
+            })
+                .ToList();
         }
 
         public static List<CurrencyHistory> GetHistoryRange(CurrencyType from, CurrencyType to, string startDate, string endDate, string apiKey = null)
@@ -80,22 +65,16 @@ namespace CurrencyConverter.Helpers
             else
                 url = PremiumBaseUrl + "convert?q=" + from + "_" + to + "&compact=ultra&date=" + startDate + "&endDate=" + endDate + "&apiKey=" + apiKey;
 
-            string jsonString = GetResponse(url);
-            var list = new List<CurrencyHistory>();
+            var jsonString = GetResponse(url);
             var data = JObject.Parse(jsonString).First.ToArray();
-            foreach (var item in data)
-            {
-                var obj = (JObject)item;
-                foreach (JProperty prop in obj.Properties())
-                {
-                    list.Add(new CurrencyHistory
+            return (from item in data
+                    let obj = (JObject)item
+                    from prop in obj.Properties()
+                    select new CurrencyHistory
                     {
                         Date = prop.Name,
                         ExchangeRate = item[prop.Name].ToObject<double>()
-                    });
-                }
-            }
-            return list;
+                    }).ToList();
         }
 
         public static CurrencyHistory GetHistory(CurrencyType from, CurrencyType to, string date, string apiKey = null)
@@ -106,19 +85,13 @@ namespace CurrencyConverter.Helpers
             else
                 url = PremiumBaseUrl + "convert?q=" + from + "_" + to + "&compact=ultra&date=" + date + "&apiKey=" + apiKey;
 
-            string jsonString = GetResponse(url);
+            var jsonString = GetResponse(url);
             var data = JObject.Parse(jsonString);
-            var obj = (JObject)data;
-            foreach (JProperty prop in obj.Properties())
+            return data.Properties().Select(prop => new CurrencyHistory
             {
-                return new CurrencyHistory
-                {
-                    Date = prop.Name,
-                    ExchangeRate = data[prop.Name][date].ToObject<double>()
-                };
-            }
-
-            return null;
+                Date = prop.Name,
+                ExchangeRate = data[prop.Name][date].ToObject<double>()
+            }).FirstOrDefault();
         }
 
         public static double ExchangeRate(CurrencyType from, CurrencyType to, string apiKey = null)
@@ -129,20 +102,20 @@ namespace CurrencyConverter.Helpers
             else
                 url = PremiumBaseUrl + "convert?q=" + from + "_" + to + "&compact=y&apiKey=" + apiKey;
 
-            string jsonString = GetResponse(url);
+            var jsonString = GetResponse(url);
             return JObject.Parse(jsonString).First.First["val"].ToObject<double>();
         }
 
         private static string GetResponse(string url)
         {
-            string jsonString = string.Empty;
+            string jsonString;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
+            using (var response = (HttpWebResponse)request.GetResponse())
+            using (var stream = response.GetResponseStream())
+            using (var reader = new StreamReader(stream))
             {
                 jsonString = reader.ReadToEnd();
             }
