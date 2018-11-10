@@ -17,7 +17,12 @@ namespace CurrencyConverter
         {
             Conversions = new List<Tuple<string, string>>();
         }
-        
+
+        public Converter(string apiKey)
+        {
+            Conversions = new List<Tuple<string, string>>();
+        }
+
         public double Convert(double amount, CurrencyType from, CurrencyType to)
         {
             return RequestHelper.ExchangeRate(from, to) * amount;

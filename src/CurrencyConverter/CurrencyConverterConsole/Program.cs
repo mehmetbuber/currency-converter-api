@@ -37,11 +37,11 @@ namespace CurrencyConverterConsole
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.Date).ToArray()));
             Console.WriteLine(String.Join(",", historyRange.Select(p => p.ExchangeRate).ToArray()));
 
-            GetAllCurrenciesAsync(converter);
-            GetAllCountriesAsync(converter);
-            ConvertAsync(converter);
-            GetHistoryAsync(converter);
-            GetHistoryRangeAsync(converter);
+            //GetAllCurrenciesAsync(converter);
+            //GetAllCountriesAsync(converter);
+            //ConvertAsync(converter);
+            //GetHistoryAsync(converter);
+            //GetHistoryRangeAsync(converter);
 
             Console.Read();
         }
