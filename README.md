@@ -35,15 +35,15 @@ var currencies = await converter.GetAllCurrenciesAsync();
 
 ### Basic Conversion Async
 ```
-var basic = await converter.ConvertAsync(1, CurrencyType.USD, CurrencyType.TRY);
+var basic = await converter.ConvertAsync(1, CurrencyType.USD, CurrencyType.EUR);
 ```
 
 ### History Single Date Async
 ```
-var history = await converter.GetHistoryAsync(CurrencyType.USD, CurrencyType.TRY, "2018-08-01");
+var history = await converter.GetHistoryAsync(CurrencyType.USD, CurrencyType.EUR, "2018-08-01");
 ```
 
 ### History Date Range Async
 ```
-var historyRange = await converter.GetHistoryRangeAsync(CurrencyType.USD, CurrencyType.TRY, "2018-08-01", "2018-08-06");
+var historyRange = await converter.GetHistoryRangeAsync(CurrencyType.USD, CurrencyType.EUR, "2018-08-01", "2018-08-06");
 ```
