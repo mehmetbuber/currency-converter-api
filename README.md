@@ -1,12 +1,15 @@
 # currency-converter-api
-https://free.currencyconverterapi.com/ Unofficial C# Library
+Unofficial https://www.currencyconverterapi.com/ C# Library
 
 ## Converter Object
 ### Without API KEY
+Requests goes to https://free.currencyconverterapi.com/api/v6/ base url without api key;
 ```
 Converter converter = new Converter();
 ```
+
 ### With API KEY
+Requests goes to https://api.currencyconverterapi.com/api/v6/ base url with api key;
 ```
 Converter converter = new Converter("[YOUR_API_KEY]");
 ```
