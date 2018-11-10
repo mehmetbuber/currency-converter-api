@@ -20,6 +20,11 @@ Converter converter = new Converter("[YOUR_API_KEY]");
 var currencies = converter.GetAllCurrencies();
 ```
 
+### List of Countries
+```
+var countries = converter.GetAllCountries();
+```
+
 ### Basic Conversion
 ```
 var result = converter.Convert(1, CurrencyType.USD, CurrencyType.EUR);
@@ -39,6 +44,11 @@ var historyRange = converter.GetHistoryRange(CurrencyType.USD, CurrencyType.EUR,
 ### List of Currencies Async
 ```
 var currencies = await converter.GetAllCurrenciesAsync();
+```
+
+### List of Countries Async
+```
+var countries = await converter.GetAllCountriesAsync();
 ```
 
 ### Basic Conversion Async
