@@ -2,8 +2,13 @@
 https://free.currencyconverterapi.com/ Unofficial C# Library
 
 ## Converter Object
+### Without API KEY
 ```
 Converter converter = new Converter();
+```
+### With API KEY
+```
+Converter converter = new Converter("[YOUR_API_KEY]");
 ```
 
 ## Synchronous Functions
